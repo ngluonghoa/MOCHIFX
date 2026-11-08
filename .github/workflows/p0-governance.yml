@@ -1,0 +1,44 @@
+name: MOCHIFX P0 Governance CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  governance-smoke:
+    name: P0 governance smoke (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Prepare Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Verify bootstrap baseline
+        shell: bash
+        run: |
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+
+          expected = tuple(map(int, "${{ matrix.python-version }}".split(".")))
+          assert sys.version_info[:2] == expected, "Python matrix mismatch"
+          readme = Path("README.md").read_text(encoding="utf-8")
+          assert "# MOCHIFX" in readme, "Missing repository identity"
+          assert "frozen" in readme.lower(), "Missing initial freeze notice"
+          print(f"MOCHIFX governance smoke OK: Python {sys.version.split()[0]}")
+          PY
