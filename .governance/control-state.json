@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "project_id": "MOCHIFX",
+  "purpose": "remote_single_writer_control_register",
+  "control_epoch": 1,
+  "control_state": "FROZEN",
+  "writer_state": "NOT_ACTIVE",
+  "permit_write": false,
+  "active_owner_generation": 1,
+  "active_owner_label": "MOCHIFX-20261108-OWNER-APPROVED-CURRENT-CHAT-G01",
+  "session_id": null,
+  "lease_id": null,
+  "lease_expiry_utc": null,
+  "protected_main_base_sha": "bdc6a94f0f850042039192fda0e02068e7d0395b",
+  "work_item": "P0_WAIT_FOR_PROTECTED_CONTROL_REF_AND_TRUSTED_GIT_DOCS_AUTHORIZER",
+  "source_of_truth": {
+    "docs_owner_gate": "1SFhtzZ9ym8VaY36lCM0IrRbAnCDwCv6p093Dwoi6ZT4",
+    "control_branch": "control/mochifx-writer-gate",
+    "control_file": ".governance/control-state.json"
+  },
+  "enforcement_evidence": {
+    "control_branch_protected": false,
+    "trusted_isolated_writer_identity": false,
+    "trusted_google_drive_write_gateway": false,
+    "cross_actor_negative_tests_passed": false
+  },
+  "safety": {
+    "refuse_on_owner_mismatch": true,
+    "refuse_on_git_head_drift": true,
+    "refuse_on_docs_revision_mismatch": true,
+    "refuse_on_missing_or_expired_lease": true,
+    "required_git_mutation": "compare_and_swap_expected_sha",
+    "never_implicitly_acquire_on_freeze_or_timeout": true,
+    "never_exempt_nonowner_discussion": true,
+    "maximum_scope": "separately_authorized_lease_only"
+  },
+  "notes": "BOOTSTRAP METADATA ONLY. NOT AN ACTIVE WRITE PERMIT. A public branch, manual conversation label or CAS alone cannot authenticate ChatGPT conversations or stop clients with shared write credentials. Block all operational mutations until protected control ref and trusted GitHub/Google Drive write gateways are independently verified."
+}
